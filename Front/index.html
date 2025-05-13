@@ -178,28 +178,29 @@
 </body>
 
 <script>
-  // Espera o DOM carregar
   document.addEventListener('DOMContentLoaded', () => {
-    fetch('http://localhost:3000/cursos')
-      .then(response => response.json())
-      .then(data => {
-        const courseContainer = document.querySelector('.course-cards');
-        courseContainer.innerHTML = ''; // Limpa os cursos estáticos
+    // Seleciona todos os botões de inscrição
+    const botoesInscricao = document.querySelectorAll('.cta-button, .signup-button, .plan-button');
 
-        data.forEach(curso => {
-          const card = document.createElement('div');
-          card.className = 'course-card';
-          card.innerHTML = `
-            <img src="curso.jpg" alt="Curso ${curso.titulo}">
-            <div class="course-info">
-              <h3>${curso.titulo}</h3>
-              <p>${curso.descricao}</p>
-            </div>
-          `;
-          courseContainer.appendChild(card);
-        });
-      })
-      .catch(error => console.error('Erro ao carregar cursos:', error));
+    botoesInscricao.forEach(botao => {
+      botao.addEventListener('click', () => {
+        fetch('http://localhost:3000/cta-button', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ cursoId: 1 }) // ou envie o cursoId correto, se disponível
+        })
+          .then(res => res.json())
+          .then(data => {
+            alert('Inscrição realizada com sucesso!');
+          })
+          .catch(err => {
+            alert('Erro ao realizar inscrição.');
+          });
+      });
+    });
   });
 </script>
+
 </html>
