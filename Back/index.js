@@ -1,23 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Seleciona todos os botões com classe .cta-button ou .signup-button
-  const botoes = document.querySelectorAll('.cta-button, .signup-button');
+const { database } = require('./models');
 
-  botoes.forEach(botao => {
-    botao.addEventListener('click', () => {
-      fetch('http://localhost:3000/cta-button', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ cursoId: 1 }), // Altere conforme necessário
-      })
-        .then(res => res.json())
-        .then(data => {
-          alert('Inscrição realizada com sucesso!');
-        })
-        .catch(err => {
-          alert('Erro ao realizar inscrição.');
-        });
-    });
-  });
-});
+database.authenticate()
+  .then(() => {
+    console.log('🟢 Conectado com sucesso ao banco de dados.');
+    return database.sync();
+  })
+  .then(() => console.log('🟢 Tabelas sincronizadas.'))
+  .catch(err => console.error('🔴 Erro ao conectar:', err));
